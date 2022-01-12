@@ -22,6 +22,9 @@ export class Cart {
   @OneToMany(() => CartProduct, (cartProduct) => cartProduct.cart)
   products: CartProduct[];
 
+  @Column()
+  userId: string;
+
   @CreateDateColumn()
   createdOn: Date;
 
