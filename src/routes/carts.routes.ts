@@ -1,26 +1,28 @@
 import { Router, Express } from "express";
-import HandleCartController from "../controllers/Carts/createCart";
-import DeleteCartController from "../controllers/Carts/deleteCart";
+import { setPassword, authenticate } from "../middlewares/user.middleware";
+import { isAdmOrResourceOwner } from "../middlewares/adm.middleware";
+import HandleCartController from "../controllers/Carts/handleCart";
 import ListCartsController from "../controllers/Carts/listCart";
 import RetriveCartController from "../controllers/Carts/retriveCart";
+import DeleteCartController from "../controllers/Carts/deleteCart";
 
-const routerCart = Router();
-const routerBuy = Router();
+const cartRouter = Router();
+const buyRouter = Router();
 
 const cartsRoutes = (app: Express) => {
-  routerCart.post("", new HandleCartController().handle);
+  cartRouter.post("", new HandleCartController().handle);
 
-  routerCart.get("", new ListCartsController().handle);
-  routerCart.get("/:id", new RetriveCartController().handle);
+  cartRouter.get("", new ListCartsController().handle);
+  cartRouter.get("/:id", new RetriveCartController().handle);
 
-  routerCart.delete("/:product_id", new DeleteCartController().handle);
+  cartRouter.delete("/product_id", new DeleteCartController().handle);
 
-  routerBuy.post("");
-  routerBuy.get("");
-  routerBuy.get(":/id");
+  buyRouter.post("");
+  buyRouter.get("");
+  buyRouter.get("/:id");
 
-  app.use("cart", routerCart);
-  app.use("buy", routerBuy);
+  app.use("/carts", cartRouter);
+  app.use("/buy", buyRouter);
 };
 
 export default cartsRoutes;

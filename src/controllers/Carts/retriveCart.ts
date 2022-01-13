@@ -4,9 +4,9 @@ class RetriveCartController {
   async handle(request, response) {
     const retriveCartService = new RetriveCartService();
 
-    const user = await retriveCartService.execute(request.userId);
+    const cart = await retriveCartService.execute(request.userId);
 
-    return response.json(user);
+    return response.json(cart);
   }
 }
 
