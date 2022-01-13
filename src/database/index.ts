@@ -1,7 +1,7 @@
 import { createConnection } from "typeorm";
 
-function connection() {
-  return createConnection();
-}
-
-export default connection;
+createConnection()
+  .then(() => {
+    console.log("Database connected");
+  })
+  .catch((error) => console.log(error));
