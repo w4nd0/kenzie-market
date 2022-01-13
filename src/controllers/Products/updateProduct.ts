@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import UpdateProductsService from "../../services/Products/updateProduct.service";
 
-class UpdateProductsController {
+class UpdateProductController {
   async handle(request: Request, response: Response) {
     const { uuid } = request.params;
 
@@ -15,4 +15,4 @@ class UpdateProductsController {
   }
 }
 
-export default UpdateProductsController;
+export default UpdateProductController;
