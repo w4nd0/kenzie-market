@@ -4,6 +4,7 @@ import { getCustomRepository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../../config/auth";
+import ErrorHandler from "../../utils/error";
 
 class LoginUserService {
   async execute(user: InfoLogin) {
@@ -12,7 +13,7 @@ class LoginUserService {
     const { email, password } = user;
 
     if (!email || !password) {
-      throw new Error();
+      throw new ErrorHandler("Wrong email/password");
     }
 
     const infoLogin = await usersRepository.findOne({
@@ -21,15 +22,15 @@ class LoginUserService {
     });
 
     if (!infoLogin) {
-      throw new Error();
+      throw new ErrorHandler("Wrong email/password");
     }
     const match = await bcrypt.compare(password, infoLogin.password);
 
     if (!match) {
-      throw new Error();
+      throw new ErrorHandler("Wrong email/password");
     }
     const token: string = jwt.sign(
-      { id: infoLogin.id, isAdm: infoLogin.isAdm },
+      { userId: infoLogin.id, isAdm: infoLogin.isAdm },
       config.secret,
       {
         expiresIn: config.expiresIn,

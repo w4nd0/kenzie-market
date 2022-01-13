@@ -18,7 +18,7 @@ const productsRoutes = (app: Express) => {
   router.patch("/:id", new UpdateProductController().handle);
   router.delete("/:id", new DeleteProductController().handle);
 
-  app.use("/products", router);
+  app.use("/product", router);
 };
 
 export default productsRoutes;

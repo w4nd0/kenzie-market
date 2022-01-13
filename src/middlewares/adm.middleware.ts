@@ -1,20 +1,21 @@
 import jwt from "jsonwebtoken";
-import { ErrorHandler } from "../utils/error";
+import ErrorHandler from "../utils/error";
 
 export const isAdmOrResourceOwner = async (req, res, next) => {
   try {
     const loginInfo = jwt.decode(req.headers.authorization.split(" ")[1]);
 
-    const { id, isAdm }: any = loginInfo;
+    const { userId, isAdm }: any = loginInfo;
 
-    const { uuid } = req.params;
+    const { id } = req.params;
 
-    if (id === uuid || isAdm) {
+    if (userId === id || isAdm) {
       next();
     } else {
-      throw new ErrorHandler(401, "Missing admin permissions");
+      throw new ErrorHandler("Missing admin permissions", 401);
     }
   } catch (e) {
-    res.status(400).json({ message: e.message });
+    throw new ErrorHandler("Missing admin permissions", 401);
+
   }
 };

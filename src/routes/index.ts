@@ -6,8 +6,8 @@ import express from "express";
 const routes = (app) => {
   app.use(express.json());
   usersRoutes(app);
+  productsRoutes(app);
   //   cartsRoutes(app);
-  //   productsRoutes(app);
 };
 
 export default routes;

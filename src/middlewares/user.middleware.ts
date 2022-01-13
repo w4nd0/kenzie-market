@@ -30,7 +30,8 @@ export const authenticate = async (req, res, next) => {
 
     const user = <jwt.UserId>jwt.decode(token);
 
-    req.userId = user.id;
+    req.userId = user.userId;
+
     next();
   } catch (e) {
     res.status(400).json({ message: e.message });
