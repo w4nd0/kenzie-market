@@ -2,6 +2,6 @@ import { EntityRepository, Repository } from "typeorm";
 import { Cart } from "../models/Cart";
 
 @EntityRepository(Cart)
-class UsersRepository extends Repository<Cart> {}
+class CartsRepository extends Repository<Cart> {}
 
-export { UsersRepository };
+export { CartsRepository };

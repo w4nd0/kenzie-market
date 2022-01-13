@@ -1,4 +1,5 @@
 import RetriveUserService from "../../services/Users/retriveUser.service";
+
 class RetriveUserController {
   async handle(request, response) {
     const retriveUserService = new RetriveUserService();

@@ -1,7 +1,7 @@
 import { UsersRepository } from "../../repositories/users";
 import { getCustomRepository } from "typeorm";
 
-class LisUsersService {
+class ListUsersService {
   async execute() {
     const usersRepository = getCustomRepository(UsersRepository);
 
@@ -11,4 +11,4 @@ class LisUsersService {
   }
 }
 
-export default LisUsersService;
+export default ListUsersService;
