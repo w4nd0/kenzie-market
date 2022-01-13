@@ -1,13 +1,13 @@
-import { ProductsRepository } from "../../repositories/products";
+import { CartsRepository } from "../../repositories/carts";
 import { getCustomRepository } from "typeorm";
 
-class RetriveProductService {
+class RetriveCartService {
   async execute(id) {
-    const cartsRepository = getCustomRepository(ProductsRepository);
+    const cartsRepository = getCustomRepository(CartsRepository);
 
     // const cart = await cartsRepository.findOneOrFail({ id });
 
     // return cart;
   }
 }
-export default RetriveProductService;
+export default RetriveCartService;

@@ -3,7 +3,7 @@ import { InfoCart } from "../../types";
 import { CartsRepository } from "../../repositories/carts";
 import { getCustomRepository } from "typeorm";
 
-class CreateCartService {
+class HandleCartService {
   async execute(cart: InfoCart): Promise<Cart> {
     const cartsRepository = getCustomRepository(CartsRepository);
 
@@ -15,4 +15,4 @@ class CreateCartService {
   }
 }
 
-export default CreateCartService;
+export default HandleCartService;
