@@ -7,7 +7,7 @@ const routes = (app) => {
   app.use(express.json());
   usersRoutes(app);
   productsRoutes(app);
-  //   cartsRoutes(app);
+  cartsRoutes(app);
 };
 
 export default routes;

@@ -9,7 +9,7 @@ class RetriveUserService {
     const user = await usersRepository.findOneOrFail({ id }).catch((e) => {
       throw new ErrorHandler("User not found");
     });
-
+    console.log(user.cart)
     return user;
   }
 }

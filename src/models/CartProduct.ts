@@ -14,7 +14,7 @@ class CartProduct {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @ManyToOne(() => Product)
+  @ManyToOne(() => Product, { eager: true })
   product: Product;
 
   @ManyToOne(() => Cart)

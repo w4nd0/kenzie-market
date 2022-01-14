@@ -5,8 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  OneToOne,
+  JoinColumn,
 } from "typeorm";
 import CartProduct from "./CartProduct";
+import User from "./User";
 
 @Entity("carts")
 export class Cart {
@@ -16,17 +19,14 @@ export class Cart {
   @Column()
   total: number;
 
-  @Column()
-  email: string;
-
-  @OneToMany(() => CartProduct, (cartProduct) => cartProduct.cart)
+  @OneToMany(() => CartProduct, (cartProduct) => cartProduct.cart, {
+    eager: true,
+  })
   products: CartProduct[];
 
-  @Column()
-  userId: string;
-
-  @CreateDateColumn()
-  createdOn: Date;
+  @OneToOne(() => User, (user) => user.cart)
+  @JoinColumn()
+  user: User;
 
   @UpdateDateColumn()
   updatedOn: Date;

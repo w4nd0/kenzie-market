@@ -1,13 +1,21 @@
 import { Request, Response } from "express";
-import HandleCartService from "../../services/Carts/handleProduct.service";
+import HandleCartService from "../../services/Carts/handleCart.service";
+import { InfoUserCart } from "../../types";
 
 class HandleCartController {
-  async handle(request: Request, response: Response) {
+  async handle(request, response) {
     const handleCartService = new HandleCartService();
 
-    const newCart = await handleCartService.execute(request.body);
+    const { productId } = request.body;
 
-    return response.json(newCart);
+    const Infouser: InfoUserCart = {
+      userId: request.userId,
+      cartId: request.cartId,
+    };
+
+    const cart = await handleCartService.execute(productId, Infouser);
+
+    return response.json(cart);
   }
 }
 

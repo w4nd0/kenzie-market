@@ -1,5 +1,6 @@
 import { ProductsRepository } from "../../repositories/products";
 import { getCustomRepository } from "typeorm";
+import ErrorHandler from "../../utils/error";
 
 class UpdateProductService {
   async execute({ id, data }) {
@@ -8,7 +9,7 @@ class UpdateProductService {
     const product = await productsRepository.findOne({ id });
 
     if (!product) {
-      throw new Error("Product not found");
+      throw new ErrorHandler("Product not found");
     }
 
     await productsRepository.update(id, data);

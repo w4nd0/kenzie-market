@@ -19,8 +19,13 @@ export class tableCart1642010445189 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           { name: "userId", type: "uuid" },
-          { name: "total", type: "decimal", precision: 10, scale: 2 },
-          { name: "createdOn", type: "timestamp", default: "now()" },
+          {
+            name: "total",
+            type: "decimal",
+            precision: 10,
+            scale: 2,
+            isNullable: true,
+          },
           { name: "updatedOn", type: "timestamp", default: "now()" },
         ],
       })

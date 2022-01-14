@@ -1,4 +1,4 @@
-import { Product } from "../../models/Product";
+import Product from "../../models/Product";
 import { InfoProduct } from "../../types";
 import { ProductsRepository } from "../../repositories/products";
 import { getCustomRepository } from "typeorm";

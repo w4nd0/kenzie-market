@@ -4,7 +4,9 @@ class RetriveProductController {
   async handle(request, response) {
     const retriveProductService = new RetriveProductService();
 
-    const product = await retriveProductService.execute(request.userId);
+    const { id } = request.params;
+
+    const product = await retriveProductService.execute(id);
 
     return response.json(product);
   }

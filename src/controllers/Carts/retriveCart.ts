@@ -1,10 +1,13 @@
+import { Request, Response } from "express";
 import RetriveCartService from "../../services/Carts/retriveCart.service";
 
 class RetriveCartController {
-  async handle(request, response) {
+  async handle(request: Request, response: Response) {
     const retriveCartService = new RetriveCartService();
 
-    const cart = await retriveCartService.execute(request.userId);
+    const { id } = request.params;
+
+    const cart = await retriveCartService.execute(id);
 
     return response.json(cart);
   }

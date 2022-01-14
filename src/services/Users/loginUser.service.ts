@@ -30,7 +30,11 @@ class LoginUserService {
       throw new ErrorHandler("Wrong email/password");
     }
     const token: string = jwt.sign(
-      { userId: infoLogin.id, isAdm: infoLogin.isAdm },
+      {
+        userId: infoLogin.id,
+        cartId: infoLogin.cart.id,
+        isAdm: infoLogin.isAdm,
+      },
       config.secret,
       {
         expiresIn: config.expiresIn,

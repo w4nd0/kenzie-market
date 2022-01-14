@@ -13,6 +13,7 @@ export interface InfoLogin {
 }
 
 export interface InfoProduct {
+  id: string;
   name: string;
   price: number;
 }
@@ -22,7 +23,10 @@ export interface InfoCart {
   user: InfoUser;
 }
 
-
+export interface InfoUserCart {
+  userId: string;
+  cartId: string;
+}
 declare module "jsonwebtoken" {
   export interface UserId extends jwt.JwtPayload {
     id: string;

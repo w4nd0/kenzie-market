@@ -4,24 +4,30 @@ import { isAdmOrResourceOwner } from "../middlewares/adm.middleware";
 import HandleCartController from "../controllers/Carts/handleCart";
 import ListCartsController from "../controllers/Carts/listCart";
 import RetriveCartController from "../controllers/Carts/retriveCart";
-import DeleteCartController from "../controllers/Carts/deleteCart";
+import DeleteProductCartController from "../controllers/Carts/deleteProductCart";
 
 const cartRouter = Router();
 const buyRouter = Router();
 
 const cartsRoutes = (app: Express) => {
+  cartRouter.use(authenticate);
+
   cartRouter.post("", new HandleCartController().handle);
 
-  cartRouter.get("", new ListCartsController().handle);
-  cartRouter.get("/:id", new RetriveCartController().handle);
+  cartRouter.get("", isAdmOrResourceOwner, new ListCartsController().handle);
+  cartRouter.get(
+    "/:id",
+    isAdmOrResourceOwner,
+    new RetriveCartController().handle
+  );
 
-  cartRouter.delete("/product_id", new DeleteCartController().handle);
+  cartRouter.delete("/:product_id", new DeleteProductCartController().handle);
 
   buyRouter.post("");
   buyRouter.get("");
   buyRouter.get("/:id");
 
-  app.use("/carts", cartRouter);
+  app.use("/cart", cartRouter);
   app.use("/buy", buyRouter);
 };
 

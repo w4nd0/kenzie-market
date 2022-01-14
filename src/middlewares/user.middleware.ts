@@ -31,6 +31,8 @@ export const authenticate = async (req, res, next) => {
     const user = <jwt.UserId>jwt.decode(token);
 
     req.userId = user.userId;
+    
+    req.cartId = user.cartId;
 
     next();
   } catch (e) {
