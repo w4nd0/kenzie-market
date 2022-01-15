@@ -1,3 +1,4 @@
+import { instanceToInstance } from "class-transformer";
 import { Request, Response } from "express";
 import RetriveCartService from "../../services/Carts/retriveCart.service";
 
@@ -7,9 +8,9 @@ class RetriveCartController {
 
     const { id } = request.params;
 
-    const cart = await retriveCartService.execute(request.cartId);
+    const cart = await retriveCartService.execute(id);
 
-    return response.json(cart);
+    return response.json(instanceToInstance(cart));
   }
 }
 

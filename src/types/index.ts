@@ -27,8 +27,11 @@ export interface InfoUserCart {
   userId: string;
   cartId: string;
 }
+
 declare module "jsonwebtoken" {
   export interface UserId extends jwt.JwtPayload {
-    id: string;
+    userId: string;
+    cartId: string;
+    isAdm: boolean;
   }
 }

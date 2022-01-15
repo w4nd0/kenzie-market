@@ -22,6 +22,7 @@ export class tableCart1642010445189 implements MigrationInterface {
           {
             name: "total",
             type: "decimal",
+            default: 0,
             precision: 10,
             scale: 2,
             isNullable: true,

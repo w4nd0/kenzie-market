@@ -26,16 +26,6 @@ export class tableCartProduct1642016302558 implements MigrationInterface {
             name: "cartId",
             type: "uuid",
           },
-          {
-            name: "created_at",
-            type: "timestamp",
-            default: "now()",
-          },
-          {
-            name: "updated_at",
-            type: "timestamp",
-            default: "now()",
-          },
         ],
       })
     );

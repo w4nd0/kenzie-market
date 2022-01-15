@@ -1,5 +1,5 @@
 import { Router, Express } from "express";
-import { setPassword, authenticate } from "../middlewares/user.middleware";
+import { authenticate } from "../middlewares/user.middleware";
 import { isAdmOrResourceOwner } from "../middlewares/adm.middleware";
 import HandleCartController from "../controllers/Carts/handleCart";
 import ListCartsController from "../controllers/Carts/listCart";

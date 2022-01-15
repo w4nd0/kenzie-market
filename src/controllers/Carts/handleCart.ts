@@ -8,12 +8,9 @@ class HandleCartController {
 
     const { productId } = request.body;
 
-    const Infouser: InfoUserCart = {
-      userId: request.userId,
-      cartId: request.cartId,
-    };
+    const cartId: string = request.cartId;
 
-    const cart = await handleCartService.execute(productId, Infouser);
+    const cart = await handleCartService.execute(productId, cartId);
 
     return response.json(cart);
   }
