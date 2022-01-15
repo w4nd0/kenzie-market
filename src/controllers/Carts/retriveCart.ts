@@ -7,7 +7,7 @@ class RetriveCartController {
 
     const { id } = request.params;
 
-    const cart = await retriveCartService.execute(id);
+    const cart = await retriveCartService.execute(request.cartId);
 
     return response.json(cart);
   }
