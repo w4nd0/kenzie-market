@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import HandleCartService from "../../services/Carts/handleCart.service";
-import { InfoUserCart } from "../../types";
 
 class HandleCartController {
   async handle(request, response) {

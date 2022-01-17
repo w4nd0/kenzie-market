@@ -7,7 +7,6 @@ import RetriveCartController from "../controllers/Carts/retriveCart";
 import DeleteProductCartController from "../controllers/Carts/deleteProductCart";
 
 const cartRouter = Router();
-const buyRouter = Router();
 
 const cartsRoutes = (app: Express) => {
   cartRouter.use(authenticate);
@@ -23,12 +22,8 @@ const cartsRoutes = (app: Express) => {
 
   cartRouter.delete("/:product_id", new DeleteProductCartController().handle);
 
-  buyRouter.post("");
-  buyRouter.get("");
-  buyRouter.get("/:id");
 
   app.use("/cart", cartRouter);
-  app.use("/buy", buyRouter);
 };
 
 export default cartsRoutes;

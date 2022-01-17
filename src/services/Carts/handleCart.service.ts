@@ -1,8 +1,6 @@
-import Cart from "../../models/Cart";
 import CartProduct from "../../models/CartProduct";
 import { CartsRepository } from "../../repositories/carts";
 import { getCustomRepository, getRepository } from "typeorm";
-import { InfoUserCart } from "../../types";
 import ErrorHandler from "../../utils/error";
 import { ProductsRepository } from "../../repositories/products";
 

@@ -23,11 +23,6 @@ export interface InfoCart {
   user: InfoUser;
 }
 
-export interface InfoUserCart {
-  userId: string;
-  cartId: string;
-}
-
 declare module "jsonwebtoken" {
   export interface UserId extends jwt.JwtPayload {
     userId: string;
