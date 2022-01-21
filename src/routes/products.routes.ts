@@ -13,9 +13,9 @@ const productsRoutes = (app: Express) => {
   router.get("", new ListProductsController().handle);
   router.get("/:id", new RetriveProductController().handle);
 
-  router.use(authenticate);
+  // router.use(authenticate);
 
-  router.post("", isAdmOrResourceOwner, new CreateProductController().handle);
+  router.post("", new CreateProductController().handle);
 
   router.patch(
     "/:id",

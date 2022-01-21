@@ -8,6 +8,7 @@ import {
   JoinColumn,
   CreateDateColumn,
 } from "typeorm";
+import CartOrderProduct from "./CartOrderProduct";
 
 @Entity("orders")
 export class Order {
@@ -16,6 +17,15 @@ export class Order {
 
   @Column()
   total: number;
+
+  @OneToMany(
+    () => CartOrderProduct,
+    (cartOrderProduct) => cartOrderProduct.order,
+    {
+      eager: true,
+    }
+  )
+  products: CartOrderProduct[];
 
   @CreateDateColumn()
   createdOn: Date;

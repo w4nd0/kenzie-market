@@ -32,7 +32,6 @@ class LoginUserService {
     const token: string = jwt.sign(
       {
         userId: infoLogin.id,
-        cartId: infoLogin.cart.id,
         isAdm: infoLogin.isAdm,
       },
       config.secret,

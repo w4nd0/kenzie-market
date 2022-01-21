@@ -1,41 +1,62 @@
-import hbs from "nodemailer-express-handlebars";
-import { getCustomRepository } from "typeorm";
+import { getConnection, getCustomRepository, getRepository } from "typeorm";
+import Cart from "../../models/Cart";
+import CartOrderProduct from "../../models/CartOrderProduct";
+import { Order } from "../../models/Order";
+import User from "../../models/User";
+import { CartsRepository } from "../../repositories/carts";
+import { OrdersRepository } from "../../repositories/orders";
 import { UsersRepository } from "../../repositories/users";
 import ErrorHandler from "../../utils/error";
-import { handlebarOptions, transport } from "../../utils/mailer";
 
 class CloseOrderService {
-  async execute(cartId: string, userId: string) {
-    const usersRepository = getCustomRepository(UsersRepository);
+  async execute(userId: string) {
+    try {
+      const usersRepository = getCustomRepository(UsersRepository);
+      const cartsRepository = getCustomRepository(CartsRepository);
+      const orderRepository = getCustomRepository(OrdersRepository);
+      const cartPoductsRepository = getRepository(CartOrderProduct);
 
-    const user = await usersRepository.findOne({ id: userId });
+      const user = await usersRepository.findOne({ id: userId });
 
-    transport.use("compile", hbs(handlebarOptions));
+      const cart = await cartsRepository.findOne({ id: user.cart.id });
 
-    const mailOptions = {
-      from: "kenzie_market@outlook.com",
-      to: user.email,
-      subject: "Resumo da compra",
-      template: "purchaseEmail",
-      context: {
-        products: user.cart.products,
-        name: user.name,
-        total: Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }).format(user.cart.total),
-      },
-    };
+      cart.cartOwner = user.id;
 
-    transport.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error)
-        throw new ErrorHandler("Error while sending the email", 500);
-      }
-      console.log(info);
-    });
+      await cartsRepository.save(cart);
 
-    return { message: "Successful purchase" };
+      const cartProducts = await cartPoductsRepository.find({
+        where: { cart: user.cart, orderId: null },
+      });
+
+      const order = orderRepository.create({});
+
+      await orderRepository.save(order);
+
+      cartProducts.forEach(async (item) => {
+        item.orderId = order.id;
+        await cartPoductsRepository.save(item);
+      });
+
+      order.total = user.cart.total;
+
+      await orderRepository.save(order);
+
+      await getConnection()
+        .createQueryBuilder()
+        .relation(User, "cart")
+        .of(user)
+        .set(null);
+
+      const newCart = new Cart();
+
+      newCart.user = user;
+
+      await cartsRepository.save(newCart);
+
+      return cart;
+    } catch (error) {
+      throw new ErrorHandler(error.message);
+    }
   }
 }
 

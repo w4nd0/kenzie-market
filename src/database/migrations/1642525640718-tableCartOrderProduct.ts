@@ -5,11 +5,11 @@ import {
   TableForeignKey,
 } from "typeorm";
 
-export class tableCartProduct1642016302558 implements MigrationInterface {
+export class tableCartOrderProduct1642525640718 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "carts_products",
+        name: "carts_orders_products",
         columns: [
           {
             name: "id",
@@ -26,11 +26,16 @@ export class tableCartProduct1642016302558 implements MigrationInterface {
             name: "cartId",
             type: "uuid",
           },
+          {
+            name: "orderId",
+            type: "uuid",
+            isNullable: true,
+          },
         ],
       })
     );
     await queryRunner.createForeignKey(
-      "carts_products",
+      "carts_orders_products",
       new TableForeignKey({
         name: "CartsFK",
         columnNames: ["cartId"],
@@ -41,7 +46,7 @@ export class tableCartProduct1642016302558 implements MigrationInterface {
       })
     );
     await queryRunner.createForeignKey(
-      "carts_products",
+      "carts_orders_products",
       new TableForeignKey({
         name: "ProductsFK",
         columnNames: ["productId"],
@@ -51,11 +56,23 @@ export class tableCartProduct1642016302558 implements MigrationInterface {
         onUpdate: "CASCADE",
       })
     );
+    await queryRunner.createForeignKey(
+      "carts_orders_products",
+      new TableForeignKey({
+        name: "OrdersFK",
+        columnNames: ["orderId"],
+        referencedColumnNames: ["id"],
+        referencedTableName: "orders",
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
+      })
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey("carts_products", "CartsFK");
-    await queryRunner.dropForeignKey("carts_products", "ProductsFK");
-    await queryRunner.dropTable("carts_products");
+    await queryRunner.dropForeignKey("carts_orders_products", "CartsFK");
+    await queryRunner.dropForeignKey("carts_orders_products", "ProductsFK");
+    await queryRunner.dropForeignKey("carts_orders_products", "OrdersFK");
+    await queryRunner.dropTable("carts_orders_products");
   }
 }

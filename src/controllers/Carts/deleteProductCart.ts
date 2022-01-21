@@ -9,7 +9,7 @@ class DeleteProductCartController {
 
     const deleteItem = await deleteProductCartService.execute(
       product_id,
-      request.cartId
+      request.userId
     );
 
     return response.json(deleteItem);

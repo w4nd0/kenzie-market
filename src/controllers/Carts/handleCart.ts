@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import HandleCartService from "../../services/Carts/handleCart.service";
 
 class HandleCartController {
@@ -7,9 +6,7 @@ class HandleCartController {
 
     const { productId } = request.body;
 
-    const cartId: string = request.cartId;
-
-    const cart = await handleCartService.execute(productId, cartId);
+    const cart = await handleCartService.execute(productId, request.userId);
 
     return response.json(cart);
   }

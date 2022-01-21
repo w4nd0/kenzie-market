@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import {
   Entity,
   Column,
@@ -7,7 +8,7 @@ import {
   OneToOne,
   JoinColumn,
 } from "typeorm";
-import CartProduct from "./CartProduct";
+import CartOrderProduct from "./CartOrderProduct";
 import User from "./User";
 
 @Entity("carts")
@@ -18,14 +19,25 @@ export class Cart {
   @Column()
   total: number;
 
-  @OneToMany(() => CartProduct, (cartProduct) => cartProduct.cart, {
-    eager: true,
-  })
-  products: CartProduct[];
+  @OneToMany(
+    () => CartOrderProduct,
+    (cartOrderProduct) => cartOrderProduct.cart,
+    {
+      eager: true,
+    }
+  )
+  products: CartOrderProduct[];
 
   @OneToOne(() => User, (user) => user.cart)
   @JoinColumn()
   user: User;
+
+  @Column()
+  userId: string;
+  
+  @Exclude()
+  @Column()
+  cartOwner: string;
 
   @UpdateDateColumn()
   updatedOn: Date;

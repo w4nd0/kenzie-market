@@ -1,16 +1,21 @@
-import CartProduct from "../../models/CartProduct";
+import CartOrderProduct from "../../models/CartOrderProduct";
 import { CartsRepository } from "../../repositories/carts";
 import { getCustomRepository, getRepository } from "typeorm";
 import ErrorHandler from "../../utils/error";
 import { ProductsRepository } from "../../repositories/products";
+import { UsersRepository } from "../../repositories/users";
 
 class HandleCartService {
-  async execute(productId: string, cardId: string) {
+  async execute(productId: string, userId: string) {
     const cartsRepository = getCustomRepository(CartsRepository);
 
     const productsRepository = getCustomRepository(ProductsRepository);
 
-    const cartProductsRepository = getRepository(CartProduct);
+    const cartOrderProductRepository = getRepository(CartOrderProduct);
+
+    const userRespository = getCustomRepository(UsersRepository);
+
+    const user = await userRespository.findOne({ id: userId });
 
     const product = await productsRepository.findOne({ id: productId });
 
@@ -18,18 +23,18 @@ class HandleCartService {
       throw new ErrorHandler("Product not found");
     }
 
-    const cart = await cartsRepository.findOne({ id: cardId });
+    const cart = await cartsRepository.findOne({ id: user.cart.id });
 
     cart.total = Number(cart.total) + Number(product.price);
 
     await cartsRepository.save(cart);
 
-    const itemAddedToCart = cartProductsRepository.create({
-      cart: { id: cardId },
+    const itemAddedToCart = cartOrderProductRepository.create({
+      cart: { id: cart.id },
       product: { id: productId },
     });
 
-    await cartProductsRepository.save(itemAddedToCart);
+    await cartOrderProductRepository.save(itemAddedToCart);
 
     return { message: "Product added to cart" };
   }

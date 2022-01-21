@@ -1,13 +1,20 @@
-import { getRepository } from "typeorm";
-import CartProduct from "../../models/CartProduct";
+import { getCustomRepository, getRepository } from "typeorm";
+import CartOrderProduct from "../../models/CartOrderProduct";
+import { UsersRepository } from "../../repositories/users";
 
 class DeleteProductCartService {
-  async execute(productId: string, cartId: string) {
-    const cartProductsRepository = getRepository(CartProduct);
+  async execute(productId: string, userId: string) {
+    const cartOrderProductRepository = getRepository(CartOrderProduct);
 
-    cartProductsRepository.findOne({ where: { cartId, productId } });
+    const userRespository = getCustomRepository(UsersRepository);
 
-    cartProductsRepository.delete(productId);
+    const user = await userRespository.findOne({ id: userId });
+
+    cartOrderProductRepository.findOne({
+      where: { cart: user.cart, productId },
+    });
+
+    cartOrderProductRepository.delete(productId);
 
     return { message: "Product removed from cart" };
   }

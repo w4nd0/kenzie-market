@@ -8,6 +8,7 @@ import Cart from "../../models/Cart";
 class CreateUserService {
   async execute(user: InfoUser): Promise<User> {
     const usersRepository = getCustomRepository(UsersRepository);
+
     const cartsRepository = getCustomRepository(CartsRepository);
 
     const newUser = usersRepository.create({ ...user });

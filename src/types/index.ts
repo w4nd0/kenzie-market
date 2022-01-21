@@ -26,7 +26,6 @@ export interface InfoCart {
 declare module "jsonwebtoken" {
   export interface UserId extends jwt.JwtPayload {
     userId: string;
-    cartId: string;
     isAdm: boolean;
   }
 }
