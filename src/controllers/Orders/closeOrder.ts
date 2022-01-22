@@ -10,7 +10,7 @@ class CloseOrderController {
 
     const cart = await closeCartService.execute(request.userId);
 
-    await serviceEmail.execute(request.userId, cart);
+    // await serviceEmail.execute(request.userId, cart);
 
     return response.json(instanceToInstance(cart));
   }

@@ -1,6 +1,6 @@
 import { Router, Express } from "express";
 import { authenticate } from "../middlewares/user.middleware";
-import { isAdmOrResourceOwner } from "../middlewares/adm.middleware";
+import { isAdm } from "../middlewares/adm.middleware";
 import CreateProductController from "../controllers/Products/createProduct";
 import ListProductsController from "../controllers/Products/listProduct";
 import RetriveProductController from "../controllers/Products/retriveProduct";
@@ -17,16 +17,8 @@ const productsRoutes = (app: Express) => {
 
   router.post("", new CreateProductController().handle);
 
-  router.patch(
-    "/:id",
-    isAdmOrResourceOwner,
-    new UpdateProductController().handle
-  );
-  router.delete(
-    "/:id",
-    isAdmOrResourceOwner,
-    new DeleteProductController().handle
-  );
+  router.patch("/:id", isAdm, new UpdateProductController().handle);
+  router.delete("/:id", isAdm, new DeleteProductController().handle);
 
   app.use("/product", router);
 };

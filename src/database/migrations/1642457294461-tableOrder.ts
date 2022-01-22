@@ -1,4 +1,9 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from "typeorm";
 
 export class tableOrder1642457294461 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -21,9 +26,21 @@ export class tableOrder1642457294461 implements MigrationInterface {
             scale: 2,
             isNullable: true,
           },
+          { name: "userId", type: "uuid", isNullable: true },
           { name: "createdOn", type: "timestamp", default: "now()" },
           { name: "updatedOn", type: "timestamp", default: "now()" },
         ],
+      })
+    );
+    await queryRunner.createForeignKey(
+      "orders",
+      new TableForeignKey({
+        name: "UserFK",
+        columnNames: ["userId"],
+        referencedColumnNames: ["id"],
+        referencedTableName: "users",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       })
     );
   }

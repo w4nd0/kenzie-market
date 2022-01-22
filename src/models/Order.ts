@@ -4,11 +4,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   OneToMany,
-  OneToOne,
-  JoinColumn,
   CreateDateColumn,
+  ManyToOne,
 } from "typeorm";
 import CartOrderProduct from "./CartOrderProduct";
+import User from "./User";
 
 @Entity("orders")
 export class Order {
@@ -26,6 +26,12 @@ export class Order {
     }
   )
   products: CartOrderProduct[];
+
+  @ManyToOne(() => User)
+  user: User;
+
+  @Column()
+  userId: string;
 
   @CreateDateColumn()
   createdOn: Date;

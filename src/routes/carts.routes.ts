@@ -1,6 +1,6 @@
 import { Router, Express } from "express";
-import { authenticate } from "../middlewares/user.middleware";
-import { isAdmOrResourceOwner } from "../middlewares/adm.middleware";
+import { authenticate, resourceOwner } from "../middlewares/user.middleware";
+import { isAdm } from "../middlewares/adm.middleware";
 import HandleCartController from "../controllers/Carts/handleCart";
 import ListCartsController from "../controllers/Carts/listCart";
 import RetriveCartController from "../controllers/Carts/retriveCart";
@@ -13,15 +13,15 @@ const cartsRoutes = (app: Express) => {
 
   cartRouter.post("", new HandleCartController().handle);
 
-  cartRouter.get("", isAdmOrResourceOwner, new ListCartsController().handle);
+  cartRouter.get("", isAdm, new ListCartsController().handle);
   cartRouter.get(
     "/:id",
-    isAdmOrResourceOwner,
+    resourceOwner,
+    isAdm,
     new RetriveCartController().handle
   );
 
   cartRouter.delete("/:product_id", new DeleteProductCartController().handle);
-
 
   app.use("/cart", cartRouter);
 };

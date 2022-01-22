@@ -1,22 +1,29 @@
 import jwt from "jsonwebtoken";
+import { getCustomRepository } from "typeorm";
+import { UsersRepository } from "../repositories/users";
 import ErrorHandler from "../utils/error";
 
-export const isAdmOrResourceOwner = async (req, res, next) => {
+export const isAdm = async (req, res, next) => {
   try {
-    const loginInfo = <jwt.UserId>(
+    const userLogin = <jwt.UserId>(
       jwt.decode(req.headers.authorization.split(" ")[1])
     );
 
-    const { isAdm, userId, cartId } = loginInfo;
+    const { userId } = userLogin;
 
-    const { id } = req.params;
+    const userRepository = getCustomRepository(UsersRepository);
 
-    if (userId === id || cartId === id || isAdm) {
+    const user = await userRepository.findOne({ id: userId });
+
+    if (user.isAdm) {
       next();
     } else {
       throw new ErrorHandler("Missing admin permissions", 401);
     }
   } catch (e) {
-    throw new ErrorHandler("Missing admin permissions", 401);
+    if (e instanceof ErrorHandler) {
+      throw new ErrorHandler(e.message, e.statusCode);
+    }
+    throw new ErrorHandler("Internal Error", 500);
   }
 };

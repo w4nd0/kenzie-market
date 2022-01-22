@@ -28,7 +28,7 @@ class CloseOrderService {
         where: { cart: user.cart, orderId: null },
       });
 
-      const order = orderRepository.create({});
+      const order = orderRepository.create({ user });
 
       await orderRepository.save(order);
 

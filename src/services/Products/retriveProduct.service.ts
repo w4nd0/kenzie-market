@@ -3,7 +3,7 @@ import { getCustomRepository } from "typeorm";
 import ErrorHandler from "../../utils/error";
 
 class RetriveProductService {
-  async execute(id) {
+  async execute(id: string) {
     const productsRepository = getCustomRepository(ProductsRepository);
 
     const product = await productsRepository
