@@ -27,6 +27,10 @@ export class tableCartOrderProduct1642525640718 implements MigrationInterface {
             type: "uuid",
           },
           {
+            name: "userId",
+            type: "uuid",
+          },
+          {
             name: "orderId",
             type: "uuid",
             isNullable: true,
@@ -63,6 +67,17 @@ export class tableCartOrderProduct1642525640718 implements MigrationInterface {
         columnNames: ["orderId"],
         referencedColumnNames: ["id"],
         referencedTableName: "orders",
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
+      })
+    );
+    await queryRunner.createForeignKey(
+      "carts_orders_products",
+      new TableForeignKey({
+        name: "UsersFK",
+        columnNames: ["userId"],
+        referencedColumnNames: ["id"],
+        referencedTableName: "users",
         onDelete: "SET NULL",
         onUpdate: "CASCADE",
       })

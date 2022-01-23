@@ -6,8 +6,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToOne,
+  OneToMany,
 } from "typeorm";
 import Cart from "./Cart";
+import Order from "./Order";
 
 @Entity("users")
 @Unique(["email"])
@@ -35,6 +37,9 @@ export class User {
 
   @OneToOne(() => Cart, (cart) => cart.user, { eager: true })
   cart: Cart;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 }
 
 export default User;

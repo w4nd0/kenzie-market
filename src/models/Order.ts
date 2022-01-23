@@ -11,7 +11,7 @@ import CartOrderProduct from "./CartOrderProduct";
 import User from "./User";
 
 @Entity("orders")
-export class Order {
+class Order {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -39,3 +39,5 @@ export class Order {
   @UpdateDateColumn()
   updatedOn: Date;
 }
+
+export default Order;

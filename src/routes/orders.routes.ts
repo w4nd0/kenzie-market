@@ -1,5 +1,5 @@
 import { Router, Express } from "express";
-import { authenticate, resourceOwner } from "../middlewares/user.middleware";
+import { authenticate, resourceOwnerOrAdm } from "../middlewares/user.middleware";
 import CloseOrderController from "../controllers/Orders/closeOrder";
 import RetrieveOrderController from "../controllers/Orders/retrieveOrder";
 import { isAdm } from "../middlewares/adm.middleware";
@@ -13,12 +13,7 @@ const ordersRoutes = (app: Express) => {
   buyRouter.post("", new CloseOrderController().handle);
 
   buyRouter.get("", isAdm, new ListOrdersController().handle);
-  buyRouter.get(
-    "/:id",
-    resourceOwner,
-    isAdm,
-    new RetrieveOrderController().handle
-  );
+  buyRouter.get("/:id", resourceOwnerOrAdm, new RetrieveOrderController().handle);
 
   app.use("/buy", buyRouter);
 };

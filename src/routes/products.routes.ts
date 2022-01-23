@@ -13,12 +13,7 @@ const productsRoutes = (app: Express) => {
   router.get("", new ListProductsController().handle);
   router.get("/:id", new RetriveProductController().handle);
 
-  // router.use(authenticate);
-
-  router.post("", new CreateProductController().handle);
-
-  router.patch("/:id", isAdm, new UpdateProductController().handle);
-  router.delete("/:id", isAdm, new DeleteProductController().handle);
+  router.post("", authenticate, isAdm, new CreateProductController().handle);
 
   app.use("/product", router);
 };

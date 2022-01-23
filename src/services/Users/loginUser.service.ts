@@ -18,7 +18,7 @@ class LoginUserService {
 
     const infoLogin = await usersRepository.findOne({
       where: { email },
-      select: ["id", "password", "isAdm"],
+      select: ["id", "password"],
     });
 
     if (!infoLogin) {
@@ -32,7 +32,6 @@ class LoginUserService {
     const token: string = jwt.sign(
       {
         userId: infoLogin.id,
-        isAdm: infoLogin.isAdm,
       },
       config.secret,
       {

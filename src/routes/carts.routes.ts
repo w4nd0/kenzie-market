@@ -1,5 +1,8 @@
 import { Router, Express } from "express";
-import { authenticate, resourceOwner } from "../middlewares/user.middleware";
+import {
+  authenticate,
+  resourceOwnerOrAdm,
+} from "../middlewares/user.middleware";
 import { isAdm } from "../middlewares/adm.middleware";
 import HandleCartController from "../controllers/Carts/handleCart";
 import ListCartsController from "../controllers/Carts/listCart";
@@ -16,8 +19,7 @@ const cartsRoutes = (app: Express) => {
   cartRouter.get("", isAdm, new ListCartsController().handle);
   cartRouter.get(
     "/:id",
-    resourceOwner,
-    isAdm,
+    resourceOwnerOrAdm,
     new RetriveCartController().handle
   );
 

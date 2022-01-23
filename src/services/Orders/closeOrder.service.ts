@@ -1,7 +1,6 @@
 import { getConnection, getCustomRepository, getRepository } from "typeorm";
 import Cart from "../../models/Cart";
 import CartOrderProduct from "../../models/CartOrderProduct";
-import { Order } from "../../models/Order";
 import User from "../../models/User";
 import { CartsRepository } from "../../repositories/carts";
 import { OrdersRepository } from "../../repositories/orders";

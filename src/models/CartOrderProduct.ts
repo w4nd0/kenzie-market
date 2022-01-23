@@ -2,7 +2,8 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 import Cart from "./Cart";
 import Product from "./Product";
 import { Exclude } from "class-transformer";
-import { Order } from "./Order";
+import Order from "./Order";
+import User from "./User";
 
 @Entity("carts_orders_products")
 class CartOrderProduct {
@@ -19,6 +20,9 @@ class CartOrderProduct {
   @ManyToOne(() => Order)
   order: Order;
 
+  @ManyToOne(() => User)
+  user: User;
+
   @Exclude()
   @Column()
   productId: string;
@@ -30,6 +34,10 @@ class CartOrderProduct {
   @Exclude()
   @Column()
   orderId: string;
+
+  @Exclude()
+  @Column()
+  userId: string;
 }
 
 export default CartOrderProduct;

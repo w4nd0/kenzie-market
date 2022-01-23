@@ -1,9 +1,8 @@
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
-import { getCustomRepository } from "typeorm";
+import { getCustomRepository, getManager } from "typeorm";
 import config from "../config/auth";
-import { CartsRepository } from "../repositories/carts";
-import { OrdersRepository } from "../repositories/orders";
+import CartOrderProduct from "../models/CartOrderProduct";
 import { UsersRepository } from "../repositories/users";
 import ErrorHandler from "../utils/error";
 
@@ -21,7 +20,7 @@ export const setPassword = async (req, res, next) => {
 export const authenticate = async (req, res, next) => {
   try {
     if (!req.headers.authorization) {
-      throw new ErrorHandler("Missing authorization headers",401);
+      throw new ErrorHandler("Missing authorization headers", 401);
     }
 
     const token = req.headers.authorization.split(" ")[1];
@@ -45,26 +44,28 @@ export const authenticate = async (req, res, next) => {
   }
 };
 
-export const resourceOwner = async (req, res, next) => {
-  const userRepository = getCustomRepository(UsersRepository);
-  const cartRepository = getCustomRepository(CartsRepository);
-  const orderRepository = getCustomRepository(OrdersRepository);
+export const resourceOwnerOrAdm = async (req, res, next) => {
+  try {
+    const { id } = req.params;
 
-  const user = await userRepository.findOne({ id: req.userId });
+    const userRepository = getCustomRepository(UsersRepository);
 
-  if (user.isAdm) next();
+    const user = await userRepository.findOne({ id: req.userId });
 
-  await cartRepository
-    .findOneOrFail({ where: [{ user }, { userId: req.userId }] })
-    .catch((e: any) => {
-      throw new ErrorHandler("Missing admin permissions", 403);
-    });
+    if (user.id === id || user.isAdm) next();
 
-  await orderRepository
-    .findOneOrFail({ where: [{ user }, { userId: req.userId }] })
-    .catch((e: any) => {
-      throw new ErrorHandler("Missing admin permissions", 403);
-    });
+    const result = await getManager()
+      .createQueryBuilder(CartOrderProduct, "buys")
+      .where("buys.cartId = :cartId", { cartId: id })
+      .orWhere("buys.orderId = :orderId", { orderId: id })
+      .getOne();
 
-  next();
+    if (result.userId !== req.userId) {
+      throw new ErrorHandler("Access not allowed");
+    }
+
+    next();
+  } catch (e) {
+    throw new ErrorHandler(e.message);
+  }
 };

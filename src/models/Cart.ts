@@ -12,7 +12,7 @@ import CartOrderProduct from "./CartOrderProduct";
 import User from "./User";
 
 @Entity("carts")
-export class Cart {
+class Cart {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -34,7 +34,7 @@ export class Cart {
 
   @Column()
   userId: string;
-  
+
   @Exclude()
   @Column()
   cartOwner: string;

@@ -32,6 +32,7 @@ class HandleCartService {
     const itemAddedToCart = cartOrderProductRepository.create({
       cart: { id: cart.id },
       product: { id: productId },
+      user: { id: user.id },
     });
 
     await cartOrderProductRepository.save(itemAddedToCart);
