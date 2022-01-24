@@ -18,7 +18,8 @@ Marcela é proprietária de um mercado e gostaria de expandir sua operação par
 - Fazer um carrinho de compra
 - Receber um email com os itens e valores comprados
 - Recuperar sua senha de acesso
-- Requisitos do sistema
+### Requisitos do sistema
+
 - Utilizar banco de dados Postgres
 - Utilizar TypeORM para as queries e gerenciamento de tabelas
 - Seguir o padrão Routes, Controller, Services e Repository
