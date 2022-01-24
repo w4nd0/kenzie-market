@@ -377,7 +377,7 @@
       "get": {
         "summary": "Lista todos as compras",
         "description": "Essa rota é responsável por listar todas as compras",
-        "tags": ["Carts"],
+        "tags": ["Orders"],
         "security": [{ "bearerAuth": [] }],
         "responses": {
           "401": {
@@ -389,7 +389,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "$ref": "#/components/schemas/ArrayOfCarts"
+                  "$ref": "#/components/schemas/ArrayOfOrders"
                 }
               }
             }
@@ -399,15 +399,15 @@
     },
     "/buy/{id}": {
       "get": {
-        "summary": "Buscar um carrinho",
-        "description": "Essa rota é responsável por buscar um carrinho",
-        "tags": ["Products"],
+        "summary": "Buscar uma compra",
+        "description": "Essa rota é responsável por buscar uma compra",
+        "tags": ["Orders"],
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID do carrinho",
+            "description": "ID da compra",
             "required": true,
             "type": "string",
             "format": "uuid"
@@ -420,7 +420,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Cart"
+                  "$ref": "#/components/schemas/Order"
                 }
               }
             }
@@ -566,11 +566,49 @@
             "type": "string"
           },
           "total": {
-            "type": "number"
-          }, 
+            "type": "object",
+            "$ref": "#/components/schemas/User"
+          },
           "userId": {
-            "type": "number"
+            "type": "string"
+          },
+          "createdOn": {
+            "type": "string"
+          },
+          "updatedOn": {
+            "type": "string"
+          },
+          "products": {
+            "type": "array",
+            "$ref": "#/components/schemas/ArrayOfProducts"
           }
+        },
+        "example": {
+          "id": "xdf00b27-ds13-400d-ddfa-fd95c85baa9c",
+          "total": "1800.00",
+          "userId": "bbbd8219-738d-4091-a5ee-e7fd1a4c4025",
+          "createdOn": "2022-01-22T23:54:21.133Z",
+          "updatedOn": "2022-01-22T23:54:21.245Z",
+          "products": [
+            {
+              "product": {
+                "id": "e18d4518-fe01-4912-8af8-c7eeb7746d6c",
+                "name": "TV '58",
+                "price": "1000.00",
+                "createdOn": "2022-01-22T23:53:25.686Z",
+                "updatedOn": "2022-01-22T23:53:25.686Z"
+              }
+            },
+            {
+              "product": {
+                "id": "d019dcfc-59ed-4a94-9223-c99e2f9e2986",
+                "name": "Monito '20",
+                "price": "800.00",
+                "createdOn": "2022-01-22T23:53:17.979Z",
+                "updatedOn": "2022-01-22T23:53:17.979Z"
+              }
+            }
+          ]
         }
       },
       "ArrayOfOrders": {
@@ -581,20 +619,31 @@
         },
         "example": [
           {
-            "id": "058280b2-8d79-450e-a29c-095cdfc751f4",
-            "name": "Marcela Aguiar",
-            "email": "marcela@hotmail.com",
-            "isAdm": true,
-            "createdOn": "2022-01-23T23:10:49.933Z",
-            "updatedOn": "2022-01-23T23:10:49.933Z"
-          },
-          {
-            "id": "709834b3-df1e-432e-bc12-adfd4fe122db",
-            "name": "Wander Moreira",
-            "email": "wander@hotmail.com",
-            "isAdm": false,
-            "createdOn": "2022-01-23T18:06:24.710Z",
-            "updatedOn": "2022-01-23T18:39:44.319Z"
+            "id": "ed600b17-dd16-43dd-bb50-fd95c85baa9c",
+            "total": "1800.00",
+            "userId": "bbbd8219-738d-4091-a5ee-e7fd1a4c4025",
+            "createdOn": "2022-01-22T23:54:21.133Z",
+            "updatedOn": "2022-01-22T23:54:21.245Z",
+            "products": [
+              {
+                "product": {
+                  "id": "e18d4518-fe01-4912-8af8-c7eeb7746d6c",
+                  "name": "TV '28",
+                  "price": "1000.00",
+                  "createdOn": "2022-01-22T23:53:25.686Z",
+                  "updatedOn": "2022-01-22T23:53:25.686Z"
+                }
+              },
+              {
+                "product": {
+                  "id": "d019dcfc-59ed-4a94-9223-c99e2f9e2986",
+                  "name": "Monito '20",
+                  "price": "800.00",
+                  "createdOn": "2022-01-22T23:53:17.979Z",
+                  "updatedOn": "2022-01-22T23:53:17.979Z"
+                }
+              }
+            ]
           }
         ]
       }
