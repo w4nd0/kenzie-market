@@ -8,7 +8,7 @@ class HandleCartController {
 
     const cart = await handleCartService.execute(productId, request.userId);
 
-    return response.json(cart);
+    return response.status(201).json(cart);
   }
 }
 

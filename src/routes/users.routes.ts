@@ -26,12 +26,7 @@ const usersRoutes = (app: Express) => {
   router.use(authenticate);
 
   router.get("", isAdm, new ListUsersController().handle);
-  router.get(
-    "/:id",
-    resourceOwnerOrAdm,
-    isAdm,
-    new RetriveUserController().handle
-  );
+  router.get("/:id", resourceOwnerOrAdm, new RetriveUserController().handle);
 
   app.use("/user", router);
 };

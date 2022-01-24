@@ -1,6 +1,13 @@
 import app from "./app";
-const port = 3000;
+import swaggerUiExpress from "swagger-ui-express";
+import swaggerDocument from "./swagger.json";
 
-app.listen(port, () => {
+app.use(
+  "/api-documentation",
+  swaggerUiExpress.serve,
+  swaggerUiExpress.setup(swaggerDocument)
+);
+
+app.listen(process.env.PORT, () => {
   console.log("App running");
 });

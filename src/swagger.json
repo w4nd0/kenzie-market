@@ -1,0 +1,610 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Kenzie Market API",
+    "description": "This is a sample server for a market.",
+    "contact": {
+      "name": "API Support",
+      "url": "http://www.kenzie-market.com/support",
+      "email": "kenzie-market@email.com"
+    },
+    "version": "1.0.0"
+  },
+
+  "servers": [
+    {
+      "url": "http://localhost:3000/",
+      "description": "local"
+    }
+  ],
+  "paths": {
+    "/user": {
+      "post": {
+        "summary": "Cadastro de usuário",
+        "description": "Essa rota é responsável por cadastrar um usuário",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "user": {
+                  "value": {
+                    "name": "wander moreira",
+                    "email": "wander178@hotmail.com",
+                    "password": "abcd",
+                    "isAdm": false,
+                    "id": "id"
+                  }
+                }
+              },
+              "schema": { "$ref": "#/components/schemas/User" }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "E-mail already registered"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todos os usuários",
+        "description": "Essa rota é responsável por listar todos os usuários",
+        "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Missing authorization headers"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ArrayOfUsers"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "summary": "Buscar um usuário",
+        "description": "Essa rota é responsável por buscar um usuário",
+        "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do usuário",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Missing authorization headers"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Acessar uma conta de usuário",
+        "description": "Essa rota é responsável por fazer o login do usuário",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginUser" }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Wrong email/password"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "token": {
+                    "value": {
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0YmVhMTVmZS0wNjBkLTRjZTktOWQ5Zi0zOTExODY2NDU5ODUiLCJpYXQiOjE2NDI5NzM3MzAsImV4cCI6MTY0MzA2MDEzMH0.Ueub42ZjYvFh7moPn0pez49NxfFSWWV5ovg6cebLcGk"
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": { "token": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product": {
+      "post": {
+        "summary": "Cadastro de produto",
+        "description": "Essa rota é responsável por cadastrar um produto",
+        "tags": ["Products"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Missing admin permissions"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "product": {
+                    "value": {
+                      "name": "TV '52",
+                      "price": 1100,
+                      "id": "e18d4518-fe01-4912-8af8-c7eeb7746d6c",
+                      "createdOn": "2022-01-22T23:53:25.686Z",
+                      "updatedOn": "2022-01-22T23:53:25.686Z"
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todos os produtos",
+        "description": "Essa rota é responsável por listar todos os produtos",
+        "tags": ["Products"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Missing authorization headers"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/ArrayOfProducts"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/{id}": {
+      "get": {
+        "summary": "Buscar um produto",
+        "description": "Essa rota é responsável por buscar um produto",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do produto",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart": {
+      "post": {
+        "summary": "Adicona um produto no carrinho",
+        "description": "Essa rota é responsável por adicionar um produto ao carrinho",
+        "tags": ["Carts"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Cart"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Access not allowed"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "cart": {
+                    "value": {
+                      "productId": "b1f92f56-db3a-48de-9309-5c23c5dfc355"
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Cart"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todos os carrinhos",
+        "description": "Essa rota é responsável por listar todos os carrinhos",
+        "tags": ["Carts"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Missing admin permissions"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/ArrayOfCarts"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart/{id}": {
+      "get": {
+        "summary": "Buscar um carrinho",
+        "description": "Essa rota é responsável por buscar um carrinho",
+        "tags": ["Carts"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do carrinho",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Cart"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/buy": {
+      "post": {
+        "summary": "Finaliza um compra",
+        "description": "Finaliza uma compra e envia o email",
+        "tags": ["Orders"],
+        "security": [{ "bearerAuth": [] }],
+
+        "responses": {
+          "400": {
+            "description": "Access not allowed"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "cart": {
+                    "value": {
+                      "productId": "b1f92f56-db3a-48de-9309-5c23c5dfc355"
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Cart"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todos as compras",
+        "description": "Essa rota é responsável por listar todas as compras",
+        "tags": ["Carts"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Missing admin permissions"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/ArrayOfCarts"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/buy/{id}": {
+      "get": {
+        "summary": "Buscar um carrinho",
+        "description": "Essa rota é responsável por buscar um carrinho",
+        "tags": ["Products"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do carrinho",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Cart"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoginUser": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "isAdm": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "example": {
+          "id": "058280b2-8d79-450e-a29c-095cdfc751f4",
+          "name": "Novo User",
+          "email": "novo-user@email.com",
+          "isAdm": false,
+          "createdOn": "2022-01-23T23:10:49.933Z",
+          "updatedOn": "2022-01-23T23:10:49.933Z"
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          }
+        }
+      },
+      "ArrayOfProducts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "$ref": "#components/schemas/Product"
+        },
+        "example": [
+          {
+            "id": "058280b2-8d79-450e-a29c-095cdfc751f4",
+            "name": "Televisão '52",
+            "createdOn": "2022-01-23T23:10:49.933Z",
+            "updatedOn": "2022-01-23T23:10:49.933Z"
+          },
+          {
+            "id": "5eadb0ff-5a0d-4642-be33-d2e8c8d60566",
+            "name": "Monitor '32",
+            "createdOn": "2022-01-23T23:10:49.933Z",
+            "updatedOn": "2022-01-23T23:10:49.933Z"
+          }
+        ]
+      },
+      "Cart": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string"
+          }
+        }
+      },
+      "ArrayOfCarts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "$ref": "#components/schemas/Cart"
+        },
+        "example": [
+          {
+            "id": "c1b1a4a7-d8d4-449b-ba7f-5fbc505c15ba",
+            "total": null,
+            "updatedOn": "2022-01-14T21:22:39.858Z",
+            "products": [
+              {
+                "id": "5eadb0ff-5a0d-4642-be33-d2e8c8d60566",
+                "name": "Monitor '32",
+                "createdOn": "2022-01-23T23:10:49.933Z",
+                "updatedOn": "2022-01-23T23:10:49.933Z"
+              }
+            ]
+          }
+        ]
+      },
+      "ArrayOfUsers": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "$ref": "#components/schemas/User"
+        },
+        "example": [
+          {
+            "id": "058280b2-8d79-450e-a29c-095cdfc751f4",
+            "name": "Marcela Aguiar",
+            "email": "marcela@hotmail.com",
+            "isAdm": true,
+            "createdOn": "2022-01-23T23:10:49.933Z",
+            "updatedOn": "2022-01-23T23:10:49.933Z"
+          },
+          {
+            "id": "709834b3-df1e-432e-bc12-adfd4fe122db",
+            "name": "Wander Moreira",
+            "email": "wander@hotmail.com",
+            "isAdm": false,
+            "createdOn": "2022-01-23T18:06:24.710Z",
+            "updatedOn": "2022-01-23T18:39:44.319Z"
+          }
+        ]
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "total": {
+            "type": "number"
+          }, 
+          "userId": {
+            "type": "number"
+          }
+        }
+      },
+      "ArrayOfOrders": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "$ref": "#components/schemas/Order"
+        },
+        "example": [
+          {
+            "id": "058280b2-8d79-450e-a29c-095cdfc751f4",
+            "name": "Marcela Aguiar",
+            "email": "marcela@hotmail.com",
+            "isAdm": true,
+            "createdOn": "2022-01-23T23:10:49.933Z",
+            "updatedOn": "2022-01-23T23:10:49.933Z"
+          },
+          {
+            "id": "709834b3-df1e-432e-bc12-adfd4fe122db",
+            "name": "Wander Moreira",
+            "email": "wander@hotmail.com",
+            "isAdm": false,
+            "createdOn": "2022-01-23T18:06:24.710Z",
+            "updatedOn": "2022-01-23T18:39:44.319Z"
+          }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

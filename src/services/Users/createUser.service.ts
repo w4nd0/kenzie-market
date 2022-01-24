@@ -4,12 +4,19 @@ import { UsersRepository } from "../../repositories/users";
 import { getCustomRepository } from "typeorm";
 import { CartsRepository } from "../../repositories/carts";
 import Cart from "../../models/Cart";
+import ErrorHandler from "../../utils/error";
 
 class CreateUserService {
   async execute(user: InfoUser): Promise<User> {
     const usersRepository = getCustomRepository(UsersRepository);
 
     const cartsRepository = getCustomRepository(CartsRepository);
+
+    const checkUser = await usersRepository.findOne({
+      where: { email: user.email },
+    });
+
+    if (checkUser) throw new ErrorHandler("E-mail already registered");
 
     const newUser = usersRepository.create({ ...user });
 

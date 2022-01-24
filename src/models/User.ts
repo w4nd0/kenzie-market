@@ -35,7 +35,7 @@ export class User {
   @UpdateDateColumn()
   updatedOn: Date;
 
-  @OneToOne(() => Cart, (cart) => cart.user, { eager: true })
+  @OneToOne(() => Cart, (cart) => cart.user)
   cart: Cart;
 
   @OneToMany(() => Order, (order) => order.user)
